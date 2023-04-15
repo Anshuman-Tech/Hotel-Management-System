@@ -6,11 +6,13 @@ import com.anshuman.userservice.Entity.User;
 import com.anshuman.userservice.Error.UserAlreadyExists;
 import com.anshuman.userservice.Error.UserNotFoundException;
 import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
 import java.util.List;
