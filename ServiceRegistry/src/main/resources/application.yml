@@ -1,0 +1,14 @@
+#The default port of netflix eureka server is 8761
+server:
+  port: 8000
+
+spring:
+  application:
+    name: Service-Registry
+
+
+# This will avoid the service registry to register itself as a eureka client
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
