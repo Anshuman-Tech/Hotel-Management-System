@@ -1,17 +1,14 @@
 package com.anshuman.userservice.Entity;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.anshuman.userservice.DTO.Rating;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.Calendar;
+import java.util.List;
 
 @Entity
 @Data
@@ -37,5 +34,9 @@ public class User {
 
     @Column(name = "phone_number",nullable = false,length = 12)
     private String phoneNumber;
+
+    //@Transient prevents this from getting saved in the database
+    @Transient
+    private List<Rating> ratings;
 
 }
