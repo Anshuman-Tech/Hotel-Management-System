@@ -8,7 +8,7 @@ spring:
         - id: User-Service
           uri: lb://User-Service  #Since we are using client name so lb//User-Service is used. lb stands for load balancer. If we use host and port then http://127.0.0.1:9000
           predicates:
-            - Path=/user/**
+            - Path=/user/**    #If we have multiple paths then we separate it with a comma.
         - id: Rating-Service
           uri: lb://Rating-Service
           predicates:
