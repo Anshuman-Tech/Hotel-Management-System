@@ -82,7 +82,7 @@ public class UserController {
 
 
 //        Using Feign client
-        
+
 //        User user = userService.getUserById(userId);
 //        ResponseEntity<List<Rating>> ratings = ratingService.getRatingsByUserId(user.getUserId());
 //        List<Rating> ratings1 = ratings.getBody();

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ApiGateway/ApiGateway.iml" filepath="$PROJECT_DIR$/ApiGateway/ApiGateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Hotel Review System(Microservices).iml" filepath="$PROJECT_DIR$/.idea/Hotel Review System(Microservices).iml" />
       <module fileurl="file://$PROJECT_DIR$/Hotel-service/Hotel-service.iml" filepath="$PROJECT_DIR$/Hotel-service/Hotel-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/RatingService/RatingService.iml" filepath="$PROJECT_DIR$/RatingService/RatingService.iml" />

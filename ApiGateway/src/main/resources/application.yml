@@ -1,0 +1,26 @@
+server:
+  port: 10000
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: User-Service
+          uri: lb://User-Service  #Since we are using client name so lb//User-Service is used. lb stands for load balancer. If we use host and port then http://127.0.0.1:9000
+          predicates:
+            - Path=/user/**
+        - id: Rating-Service
+          uri: lb://Rating-Service
+          predicates:
+            - Path=/rating/**
+        - id: Hotel-Service
+          uri: lb://Hotel-Service
+          predicates:
+            - Path=/hotel/**
+  application:
+    name: API-Gateway
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
