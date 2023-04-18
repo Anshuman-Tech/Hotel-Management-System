@@ -1,0 +1,60 @@
+server:
+  port: 9000
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/user
+    username: root
+    password: Anshuman007
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        ddl-auto: update
+    show-sql: true
+
+  application:
+    name: User-Service
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+
+#These are by default true
+    fetch-registry: true
+    register-with-eureka: true
+
+
+#Actuator
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,beans # * includes all the endpoints of the actuator.
+        #exclude: loggers #This is used to exclude an endpoint of the actuator
+  endpoint:
+    health:
+      show-details: always
+
+#Resilience4j
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingHotelBreaker:
+        registerHealthIndicator: true
+        eventConsumeBufferSize: 10
+        failureRateThreshold: 60 #percentage
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 6s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+

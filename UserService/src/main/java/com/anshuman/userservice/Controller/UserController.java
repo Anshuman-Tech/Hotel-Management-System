@@ -9,6 +9,10 @@ import com.anshuman.userservice.Error.UserAlreadyExists;
 import com.anshuman.userservice.Error.UserNotFoundException;
 import com.anshuman.userservice.External.HotelService;
 import com.anshuman.userservice.External.RatingService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +26,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
+
+    //@Slf4j or LoggerFactory is used to create the logger.
+//    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private UserService userService;
 
@@ -30,11 +38,11 @@ public class UserController {
         this.userService=userService;
     }
 
-    @Autowired
-    private RatingService ratingService;
+//    @Autowired
+//    private RatingService ratingService;
 
-    @Autowired
-    private HotelService hotelService;
+//    @Autowired
+//    private HotelService hotelService;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -54,16 +62,12 @@ public class UserController {
     }
 
     @GetMapping("/getUserBYId/{id}")
+    @CircuitBreaker(name="ratingHotelBreaker",fallbackMethod="ratingHotelFallback")
     public ResponseEntity<User> getUserById(@PathVariable("id") String userId) throws UserNotFoundException {
 
-
-
         //        When using RestTemplate Http Client
-
         User user = userService.getUserById(userId);
-
 //        127.0.0.1:9002/rating/getRatingsByUserId/User1
-
         // Using host and port
 //        List<Rating> ratings = restTemplate.getForObject("http://localhost:9002/rating/getRatingsByUserId/User1",List.class);
 
@@ -80,7 +84,6 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(user);
 
-
 //        Using Feign client
 
 //        User user = userService.getUserById(userId);
@@ -94,6 +97,23 @@ public class UserController {
 //
 //        user.setRatings(ratings2);
 //        return ResponseEntity.status(HttpStatus.FOUND).body(user);
+    }
+
+
+    //Fallback method - A fallback method is implemented when any of the dependent services is down or slow.
+    //The return type of the fallback method is same as the return type of the called API method.
+    //The parameter of the fallback method is same as the parameter of the called API method, along with an exception.
+    public ResponseEntity<User> ratingHotelFallback(String userId, Exception e){
+        log.info("One of the dependent services is down: {}",e.getMessage());
+        User user = User.builder()
+                .userId("Dummy101")
+                .userName("Dummy")
+                .emailId("dummy@gmail.com")
+                .dob("10/20/1000")
+                .ratings(Arrays.asList(new Rating()))
+                .phoneNumber("1111111111")
+                .build();
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
     @GetMapping("/getUserByUserName/{userName}")
