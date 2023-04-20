@@ -17,6 +17,25 @@ spring:
   application:
     name: User-Service
 
+#Security client configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-38772320.okta.com/oauth2/default
+      client:
+        registration:
+          my-internal-client:
+            provider: okta
+            authorization-grant-type: client_credentials
+            scope: internal #calls different services internally
+            client-id: 0oa96oe1966FHiBXr5d7
+            client-secret: PFsxOXsnGuSXsOs4_NB2aNZD9XC8mGgxnchOKeEs
+        provider:
+          okta:
+            issuer-uri: https://dev-38772320.okta.com/oauth2/default
+
+
 eureka:
   instance:
     prefer-ip-address: true
@@ -71,3 +90,10 @@ resilience4j:
         limitRefreshPeriod: 4s
         timeoutDuration: 0s
         registerHealthIndicator: true
+
+
+#Okta Configuration
+okta:
+  oauth2:
+    issuer: https://dev-38772320.okta.com/oauth2/default
+    audience: api://default
