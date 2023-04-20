@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -57,6 +58,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
+    @PreAuthorize("hasAuthority('Admin') || hasAuthority('SCOPE_internal') || hasAuthority('Normal')")
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getAllUsers();
@@ -109,6 +111,10 @@ public class UserController {
     //The parameter of the fallback method is same as the parameter of the called API method, along with an exception.
     public ResponseEntity<User> ratingHotelFallback(String userId, Exception e){
         log.info("One of the dependent services is down: {}",e.getMessage());
+
+        //If dummy data is returned even after all the services are up, then we can print the exception stack.
+        e.printStackTrace();
+
         User user = User.builder()
                 .userId("Dummy101")
                 .userName("Dummy")
