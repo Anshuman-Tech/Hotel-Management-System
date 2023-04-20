@@ -10,6 +10,8 @@ import com.anshuman.userservice.Error.UserNotFoundException;
 import com.anshuman.userservice.External.HotelService;
 import com.anshuman.userservice.External.RatingService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +64,9 @@ public class UserController {
     }
 
     @GetMapping("/getUserBYId/{id}")
-    @CircuitBreaker(name="ratingHotelBreaker",fallbackMethod="ratingHotelFallback")
+//    @CircuitBreaker(name="ratingHotelBreaker",fallbackMethod="ratingHotelFallback")
+//    @RateLimiter(name = "ratingHotelLimiter",fallbackMethod = "ratingHotelFallback")
+    @Retry(name = "ratingHotelRetry",fallbackMethod = "ratingHotelFallback")
     public ResponseEntity<User> getUserById(@PathVariable("id") String userId) throws UserNotFoundException {
 
         //        When using RestTemplate Http Client

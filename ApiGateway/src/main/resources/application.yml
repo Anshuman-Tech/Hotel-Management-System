@@ -24,3 +24,13 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8000/eureka/
+
+
+# Okta Configuration for API gateway
+okta:
+  oauth2:
+    issuer: https://dev-38772320.okta.com/oauth2/default
+    audience: api://default
+    client-id: 0oa96oe1966FHiBXr5d7
+    client-secret: PFsxOXsnGuSXsOs4_NB2aNZD9XC8mGgxnchOKeEs
+    scopes: openid, profile, email, offline_access
